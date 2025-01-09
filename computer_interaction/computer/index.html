@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computador Hospital</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Tela de Carregamento -->
+    <div id="loading-screen">
+        <img id="loading-icon" src="loading2.gif" alt="Carregando">
+        <p>Bem vindo</p>
+        <div id="loading-progress-container">
+            <div id="loading-progress-bar"></div>
+        </div>
+        <div id="macrosoft">
+            <h2>&#169;Macrosofre Corporation</h2> 
+        </div>
+    </div>
+    <!-- Desktop da aplicação -->
+    <div id="desktop">
+        <div class="icon" onclick="openApp('healthRecordApp')">
+            <img src="ocurrency.png" alt="Porta">
+            <span>Relatorio Medico!</span>
+        </div>
+        <div class="icon" onclick="openApp('')">
+            <img src="workbadge.png" alt="Emitir Identificação">
+            <span>Cartão Funcionario</span>
+        </div>
+        <div class="icon" onclick="openApp('createHealthCardApp')">
+            <img src="card.png" alt="Porta">
+            <span>Cartao Saude</span>
+        </div>
+        <div class="icon" onclick="openApp('notesApp')">
+            <img src="rb_5846.png" alt="Bloco de Notas">
+            <span>Bloco de Notas</span>
+        </div>
+        <div class="icon" onclick="openApp('filesApp')">
+            <img src="paste.png" alt="Arquivos">
+            <span>Arquivos</span>
+        </div>
+    </div>
+    
+    <!-- Aplicativos -->
+    <div id="healthRecordApp" class="app-window">
+        <div class="app-header">
+            <span>R.M | Relatorio Medico!</span>
+            <button onclick="closeApp('healthRecordApp')"><b>X</b></button>
+        </div>
+        <div class="app-content">
+            <form id="healthRecordForm">
+                <label for="patientName"><b>Nome Do(a)Medico(a):</b></label>
+                <input type="text" id="patientName" name="patientName" required>
+                
+                <label for="patientDOB"><b>Data do Relatorio:</b></label>
+                <input type="date" id="patientDOB" name="patientDOB" required>
+                
+                <label for="patientHistory"><b>Relatorio:</b></label>
+                <textarea id="patientHistory" name="patientHistory" required></textarea>
+                
+                <button type="submit">Registrar Relatorio</button>
+            </form>
+            <div id="healthRecordList"></div>
+        </div>
+    </div>
+    
+    <!-- Repetir para os outros aplicativos com os mesmos botões de minimizar e maximizar -->
+    <div id="createHealthCardApp" class="app-window">
+        <div class="app-header">
+            <span>C.S | Cartão Saúde</span>
+            <button onclick="closeApp('createHealthCardApp')"><b>X</b></button>
+        </div>
+        <div class="app-content">
+            <form id="healthCardForm" oninput="updateFrame()">
+                <div class="form-group">
+                    <label for="cardName">Nome:</label>
+                    <input type="text" id="cardName" name="cardName" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardGender">Genero:</label>
+                    <input type="text" id="cardGender" name="cardGender" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardDOB">Idade:</label>
+                    <input type="text" id="cardDOB" name="cardDOB" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardCPF">ID:</label>
+                    <input type="text" id="cardCPF" name="cardCPF" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardblood">Tipo Sanguíneo</label>
+                    <div>
+                        <label><input type="checkbox" name="bloodtype" value="A-" onchange="updateFrame()"> A-</label>
+                        <label><input type="checkbox" name="bloodtype" value="A+" onchange="updateFrame()"> A+</label>
+                        <label><input type="checkbox" name="bloodtype" value="B-" onchange="updateFrame()"> B-</label>
+                        <label><input type="checkbox" name="bloodtype" value="B+" onchange="updateFrame()"> B+</label>
+                        <label><input type="checkbox" name="bloodtype" value="AB-" onchange="updateFrame()"> AB-</label>
+                        <label><input type="checkbox" name="bloodtype" value="AB+" onchange="updateFrame()"> AB+</label>
+                        <label><input type="checkbox" name="bloodtype" value="O-" onchange="updateFrame()"> O-</label>
+                        <label><input type="checkbox" name="bloodtype" value="O+" onchange="updateFrame()"> O+</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardAddress">Cidade:</label>
+                    <input type="text" id="cardAddress" name="cardAddress" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardDate">Data de Emissão:</label>
+                    <input type="date" id="cardDate" name="cardDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardPhoto">Foto de rosto:</label>
+                    <input type="file" id="cardPhoto" name="cardPhoto" accept="image/*" onchange="loadPhoto(event)">
+                </div>
+                <button type="button" onclick="downloadImage()">Criar Carteira de Saúde</button>
+            </form>
+    
+            <div data-layer="Frame 1" class="Frame1" id="frame" style="width: 1012px; height: 637px; position: relative; background: white">
+              
+            </div>
+        </div>
+    </div>
+    
+    <div id="notesApp" class="app-window">
+        <div class="app-header">
+            <span>B.N | DoCU_x</span>
+            <button onclick="closeApp('notesApp')"><b>X</b></button>
+        </div>
+        <div class="app-content">
+            <form id="notesForm">
+                <label for="noteFileName">Nome do Arquivo:</label>
+                <input type="text" id="noteFileName" name="noteFileName" required>
+        
+                <label for="noteText">Texto:</label>
+                <textarea id="noteText" name="noteText" required></textarea>
+                <button type="submit">Salvar</button>
+            </form>
+            <div id="textsList"></div>
+        </div>
+    </div>
+    
+    <div id="filesApp" class="app-window">
+        <div class="app-header">
+            <span>A.M.C | Arquivos Medical Center</span>
+            <button onclick="closeApp('filesApp')">X</button>
+        </div>
+        <div class="app-content" id="filesList">
+            <!-- Lista de arquivos será adicionada aqui -->
+        </div> 
+    </div>
+    <!-- Bloco de notas aberto -->
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNoteModal()">&times;</span>
+            <h2>Bloco de Notas</h2>
+            <form id="noteForm">
+                <input type="text" id="modalNoteFileName" placeholder="Nome do arquivo" />
+                <textarea id="modalNoteText" placeholder="Digite seu texto aqui..."></textarea>
+                <button type="submit">Salvar</button>
+            </form>
+            <button onclick="deleteNote()">Excluir</button>
+            <button onclick="renameNote()">Renomear</button>
+        </div>
+    </div>
+    <!-- Janela de Logs -->
+    <div id="logsApp" class="app-window">
+        <div class="app-header">
+            <span>LOGS [INFORMAÇÃO PRIVADA M.C]</span>
+            <button onclick="closeApp('logsApp')"><b>X</b></button>
+        </div>
+        <div class="app-content" id="logsContent">
+            <!-- Conteúdo dos logs será adicionado aqui -->
+        </div>
+    </div>
+     <!-- Janela de Configurações -->
+    <div id="settingsApp" class="app-window">
+        <div class="app-header">
+            <span>M.C | Configurações </span>
+            <button onclick="closeApp('settingsApp')">X</button>
+        </div>
+        <div class="app-content">
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="username">Nome de Usuário:</label>
+                    <input type="text" id="username" name="username" placeholder="Nome de Usuário" autocomplete="new-user" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPhoto">Foto de Perfil:</label>
+                    <input type="file" id="userPhoto" name="userPhoto" accept="image/*" onchange="loadUserPhoto(event)">
+                    <img id="userPhotoPreview" src="" alt="Pré-visualização da Foto de Perfil" style="display: none; width: 100px; height: 100px;"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="Senha" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Senha:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha" required autocomplete="new-password">
+                </div>
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+    <div id="taskbar">
+        <div class="taskbar-icon" onclick="toggleStartMenu()">
+            <img src="Doors_logo_canto.png" alt="doors">
+        </div>
+        <div class="taskbar-icon" onclick="openApp('healthRecordApp')">
+            <img src="ocurrency.png" alt="Prontuários">
+        </div>
+        <div class="taskbar-icon" onclick="openApp('createHealthCardApp')">
+            <img src="card.png" alt="Carteira de Saúde">
+        </div>
+         
+        <div id="clock" class="clock-container">
+            <span id="current-time"></span>
+        </div>
+        <div class="taskbar-icon" onclick="toggleNotifications()">
+            <img src="icone_notificacao.png" alt="Notificações">
+        </div>
+    </div>
+    <div id="notifications-panel" class="notifications-panel">
+        <div class="notification">
+            <p>Nova notificação 1</p>
+        </div>
+        <div class="notification">
+            <p>Nova notificação 2</p>
+        </div>
+    </div>
+    <div id="startMenu" class="start-menu">
+        <div class="start-menu-item" onclick="perfil()">Perfil:</div>
+        <div class="start-menu-item" onclick="establishment()">Estabelecimento:</div>
+        <div class="start-menu-item" onclick="clock_in_at_work()">Entrar Em Serviço!</div>
+        <div class="start-menu-item" onclick="openSettings()">Configurações</div>
+        <div class="start-menu-item" onclick="logs()">Logs</div>
+        <div class="start-menu-item" onclick="shutdown()">Encerrar</div>
+    </div>
+    <div id="shutdownOverlay"></div>
+    <script src="scripts.js"></script>
+</body>
+</html>
