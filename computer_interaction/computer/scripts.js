@@ -1,12 +1,36 @@
-// Exibir tela de boas-vindas por 3 segundos
-setTimeout(function() {
-    document.getElementById('loading-screen').style.opacity = '0'; // Ocultar a tela de boas-vindas
+//Funçao para Abrir o sitema logo apos a chamada do OPENUI pelo Lua
+function openUI() {
+    const body = document.getElementsByTagName('body')[0];
+
+    
+    body.style.display = 'block';
+
+    
+    body.style.position = 'fixed'; // Fixa a posição na tela
+    body.style.top = '50%'; // Centraliza na tela
+    body.style.left = '50%'; // Centraliza na tela
+    body.style.transform = 'translate(-50%, -50%)'; 
+    body.style.width = '75%'; 
+    body.style.height = '75%'; 
+    body.style.border = '5px solid black'; 
+    body.style.zIndex = '9999'; 
+    body.style.overflow = 'hidden'; 
+
+
     setTimeout(function() {
-        document.getElementById('loading-screen').style.display = 'none'; // Esconder completamente
-        document.getElementById('desktop').style.display = 'flex'; // Mostrar o desktop
-    }, 1000); // Espera 1 segundo para a transição
-}, 0); // A tela de boas-vindas aparece por 3 segundos
-  
+        document.getElementById('loading-screen').style.opacity = '1'; 
+        setTimeout(function() {
+            document.getElementById('loading-screen').style.display = 'none'; 
+            document.getElementById('desktop').style.display = 'flex'; 
+        }, 1000); 
+    }, 0); 
+}
+window.addEventListener('message', function(event) {
+    if (event.data.action === 'openUI') {
+        openUI(); // Chama a função openUI quando a mensagem for recebida
+    }
+});
+
 // Função para fechar a janela
 let zIndexCounter = 1;
 
