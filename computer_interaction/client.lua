@@ -27,13 +27,13 @@ CreateThread(function()
     end
 end)
 
--- Fecha a interface com ESC
+-- Fecha a interface com ESC (ARRUMAR)
 RegisterNUICallback('close', function(data, cb)
     SetNuiFocus(false, false) -- Desativa a interface NUI
     cb('ok')
 end)
 
--- Função para exibir texto 3D
+-- Função para exibir texto 3D (Alterar para Props)
 function DrawText3D(x, y, z, text)
     local onScreen, _x, _y = World3dToScreen2d(x, y, z)
     local px, py, pz = table.unpack(GetGameplayCamCoords())
